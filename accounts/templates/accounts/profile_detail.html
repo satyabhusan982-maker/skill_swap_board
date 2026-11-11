@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ member.username }} | SkillSwap</title>
+</head>
+
+<body>
+    <header>
+        <a href="{% url 'offers:list' %}">← Browse offers</a>
+    </header>
+
+    <main>
+        <h1>{{ member.username }}’s profile</h1>
+
+        {% if profile %}
+        <p>{{ profile.bio|default:"This member hasn’t added a bio yet." }}</p>
+        <p>{{ profile.location_or_timezone }}</p>
+
+        <h2>Skills they want to learn</h2>
+        <ul>
+            {% for skill in wanted_skills %}
+            <li>{{ skill.skill_name }}</li>
+            {% empty %}
+            <li>No wanted skills listed yet.</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>This member hasn’t completed their profile yet.</p>
+        {% endif %}
+
+        <h2>Skills they offer</h2>
+        <ul>
+            {% for offer in offers %}
+            <li>
+                <a href="{% url 'offers:detail' offer.id %}">
+                    {{ offer.skill_name }}
+                </a>
+            </li>
+            {% empty %}
+            <li>No active offers yet.</li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+
+</html>

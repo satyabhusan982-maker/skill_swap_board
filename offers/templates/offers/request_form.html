@@ -1,0 +1,26 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Request {{ offer.skill_name }} | SkillSwap</title>
+  <link rel="stylesheet" href="{% static 'offers/site.css' %}">
+</head>
+<body>
+  <header>
+    <a href="{% url 'offers:detail' offer.id %}">← Back to offer</a>
+  </header>
+
+  <main>
+    <h1>Request to learn {{ offer.skill_name }}</h1>
+    <p>Introduce yourself and suggest how you’d like to learn.</p>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Send request</button>
+    </form>
+  </main>
+</body>
+</html>

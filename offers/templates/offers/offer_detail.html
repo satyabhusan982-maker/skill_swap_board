@@ -1,0 +1,39 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ offer.skill_name }} | SkillSwap</title>
+  <link rel="stylesheet" href="{% static 'offers/site.css' %}">
+</head>
+<body>
+  <header>
+    <a href="{% url 'offers:list' %}">← Back to offers</a>
+  </header>
+
+  <main>
+    {% if messages %}
+      {% for message in messages %}
+        <p>{{ message }}</p>
+      {% endfor %}
+    {% endif %}
+
+    <article>
+      <p>{{ offer.category }}</p>
+      <h1>{{ offer.skill_name }}</h1>
+      <p>{{ offer.description }}</p>
+      <p>Format: {{ offer.get_format_display }}</p>
+      <p>Offered by: {{ offer.owner.username }}</p>
+
+      {% if offer.availability_notes %}
+        <p>Availability: {{ offer.availability_notes }}</p>
+      {% endif %}
+
+      <a href="{% url 'offers:request_create' offer.id %}">
+        Request this skill
+      </a>
+    </article>
+  </main>
+</body>
+</html>

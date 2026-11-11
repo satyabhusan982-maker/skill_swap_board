@@ -1,0 +1,28 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Post a skill | SkillSwap</title>
+    <link rel="stylesheet" href="{% static 'offers/site.css' %}">
+</head>
+
+<body>
+    <header>
+        <a href="{% url 'offers:list' %}">← Back to offers</a>
+    </header>
+
+    <main>
+        <h1>Share a skill you can teach</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Post offer</button>
+        </form>
+    </main>
+</body>
+
+</html>

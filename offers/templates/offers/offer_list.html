@@ -1,0 +1,49 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Explore skills | SkillSwap</title>
+    <link rel="stylesheet" href="{% static 'offers/site.css' %}">
+
+</head>
+
+<body>
+    <header>
+        <a href="/">SkillSwap</a>
+        <nav>
+            <a href="{% url 'signup' %}">Create account</a>
+            <a href="{% url 'login' %}">Sign in</a>
+            <a href="{% url 'offers:create' %}">Post a skill</a>
+            <a href="{% url 'offers:requests' %}">My requests</a>
+        </nav>
+        <h1>Find a skill to learn</h1>
+    </header>
+
+    <main>
+        <form method="get" action="/">
+            <label for="search">Search offers</label>
+            <input id="search" type="search" name="q" value="{{ query }}" placeholder="Try guitar or Excel">
+            <button type="submit">Search</button>
+        </form>
+
+        <section aria-label="Skill offers">
+            {% for offer in offers %}
+            <article>
+                <p>{{ offer.category }}</p>
+                <h2>
+                    <a href="{% url 'offers:detail' offer.id %}">{{ offer.skill_name }}</a>
+                </h2>
+                <p>{{ offer.description }}</p>
+                <p>{{ offer.get_format_display }} · Offered by {{ offer.owner.username }}</p>
+            </article>
+            {% empty %}
+            <p>No offers found. Try another search.</p>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+
+</html>

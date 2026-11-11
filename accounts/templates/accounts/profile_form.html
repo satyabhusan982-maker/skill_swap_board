@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My profile | SkillSwap</title>
+</head>
+
+<body>
+  <header>
+    <a href="{% url 'offers:list' %}">← Browse offers</a>
+  </header>
+
+  <main>
+    <h1>My profile</h1>
+
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save profile</button>
+    </form>
+    <section>
+      <h2>Skills I want to learn</h2>
+
+      <form method="post" action="{% url 'accounts:skill_wanted_add' %}">
+        {% csrf_token %}
+        {{ skill_form.as_p }}
+        <button type="submit">Add skill</button>
+      </form>
+
+      <ul>
+        {% for skill in wanted_skills %}
+        <li>
+          {{ skill.skill_name }}
+          <form method="post" action="{% url 'accounts:skill_wanted_delete' skill.id %}">
+            {% csrf_token %}
+            <button type="submit">Remove</button>
+          </form>
+        </li>
+        {% empty %}
+        <li>No wanted skills added yet.</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
+
+</body>
+
+</html>
