@@ -19,4 +19,11 @@ path(
     views.request_update,
     name="request_update",
 ),
+path(
+    "requests/<int:request_id>/review/",
+    views.review_create,
+    name="review_create",
+),
+path("offers/<int:offer_id>/edit/", views.offer_edit, name="edit"),
+path("offers/<int:offer_id>/hide/", views.offer_hide, name="hide"),
 ]

@@ -1,12 +1,14 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ offer.skill_name }} | SkillSwap</title>
   <link rel="stylesheet" href="{% static 'offers/site.css' %}">
 </head>
+
 <body>
   <header>
     <a href="{% url 'offers:list' %}">← Back to offers</a>
@@ -14,9 +16,9 @@
 
   <main>
     {% if messages %}
-      {% for message in messages %}
-        <p>{{ message }}</p>
-      {% endfor %}
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
     {% endif %}
 
     <article>
@@ -25,9 +27,16 @@
       <p>{{ offer.description }}</p>
       <p>Format: {{ offer.get_format_display }}</p>
       <p>Offered by: {{ offer.owner.username }}</p>
+      <a href="{% url 'accounts:profile_detail' offer.owner.username %}">
+        View member profile
+      </a>
+      {% if user == offer.owner %}
+      <a href="{% url 'offers:edit' offer.id %}">Edit offer</a>
+      <a href="{% url 'offers:hide' offer.id %}">Hide offer</a>
+      {% endif %}
 
       {% if offer.availability_notes %}
-        <p>Availability: {{ offer.availability_notes }}</p>
+      <p>Availability: {{ offer.availability_notes }}</p>
       {% endif %}
 
       <a href="{% url 'offers:request_create' offer.id %}">
@@ -36,4 +45,5 @@
     </article>
   </main>
 </body>
+
 </html>

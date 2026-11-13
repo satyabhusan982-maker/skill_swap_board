@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My requests | SkillSwap</title>
 </head>
+
 <body>
   <header>
     <a href="{% url 'offers:list' %}">← Browse offers</a>
@@ -16,21 +18,30 @@
       <h2>Requests I received</h2>
 
       {% for item in received %}
-        <article>
-          <h3>{{ item.offer.skill_name }}</h3>
-          <p>From {{ item.requester.username }} · {{ item.get_status_display }}</p>
-          <p>{{ item.message }}</p>
+      <article>
+        <h3>{{ item.offer.skill_name }}</h3>
+        <p>From {{ item.requester.username }} · {{ item.get_status_display }}</p>
+        <p>{{ item.message }}</p>
 
-          {% if item.status == "pending" %}
-            <form method="post" action="{% url 'offers:request_update' item.id %}">
-              {% csrf_token %}
-              <button name="action" value="accept">Accept</button>
-              <button name="action" value="decline">Decline</button>
-            </form>
-          {% endif %}
-        </article>
+        {% if item.status == "pending" %}
+        <form method="post" action="{% url 'offers:request_update' item.id %}">
+          {% csrf_token %}
+          <button name="action" value="accept">Accept</button>
+          <button name="action" value="decline">Decline</button>
+        </form>
+        {% elif item.status == "accepted" %}
+        <form method="post" action="{% url 'offers:request_update' item.id %}">
+          {% csrf_token %}
+          <button name="action" value="complete">Mark swap complete</button>
+        </form>
+        {% elif item.status == "completed" %}
+        <a href="{% url 'offers:review_create' item.id %}">
+          Leave a review for {{ item.offer.owner.username }}
+        </a>
+        {% endif %}
+      </article>
       {% empty %}
-        <p>You haven’t received any requests yet.</p>
+      <p>You haven’t received any requests yet.</p>
       {% endfor %}
     </section>
 
@@ -38,22 +49,23 @@
       <h2>Requests I sent</h2>
 
       {% for item in sent %}
-        <article>
-          <h3>{{ item.offer.skill_name }}</h3>
-          <p>To {{ item.offer.owner.username }} · {{ item.get_status_display }}</p>
-          <p>{{ item.message }}</p>
+      <article>
+        <h3>{{ item.offer.skill_name }}</h3>
+        <p>To {{ item.offer.owner.username }} · {{ item.get_status_display }}</p>
+        <p>{{ item.message }}</p>
 
-          {% if item.status == "pending" %}
-            <form method="post" action="{% url 'offers:request_update' item.id %}">
-              {% csrf_token %}
-              <button name="action" value="cancel">Cancel request</button>
-            </form>
-          {% endif %}
-        </article>
+        {% if item.status == "pending" %}
+        <form method="post" action="{% url 'offers:request_update' item.id %}">
+          {% csrf_token %}
+          <button name="action" value="cancel">Cancel request</button>
+        </form>
+        {% endif %}
+      </article>
       {% empty %}
-        <p>You haven’t sent any requests yet.</p>
+      <p>You haven’t sent any requests yet.</p>
       {% endfor %}
     </section>
   </main>
 </body>
+
 </html>

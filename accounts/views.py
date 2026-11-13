@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
-from offers.models import Offer
+from django.db.models import Avg, Count
+from offers.models import Offer, Review
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
@@ -79,6 +80,13 @@ def profile_detail(request, username):
     )
 
     offers = Offer.objects.filter(owner=member, is_active=True)
+    reviews = Review.objects.filter(
+        reviewee=member,
+    ).select_related("reviewer", "swap_request__offer")
+    review_summary = reviews.aggregate(
+        average_rating=Avg("rating"),
+        review_count=Count("id"),
+    )
 
     return render(
         request,
@@ -88,5 +96,7 @@ def profile_detail(request, username):
             "profile": profile,
             "wanted_skills": wanted_skills,
             "offers": offers,
+            "reviews": reviews,
+            "review_summary": review_summary,
         },
     )

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Offer, SwapRequest
+from .models import Offer, Review, SwapRequest
 
 
 class OfferForm(forms.ModelForm):
@@ -19,3 +19,9 @@ class SwapRequestForm(forms.ModelForm):
     class Meta:
         model = SwapRequest
         fields = ["message"]
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["rating", "comment"]

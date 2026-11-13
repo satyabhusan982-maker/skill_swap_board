@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Review {{ reviewee.username }} | SkillSwap</title>
+</head>
+<body>
+  <header>
+    <a href="{% url 'offers:requests' %}">← Back to my requests</a>
+  </header>
+
+  <main>
+    <h1>Review {{ reviewee.username }}</h1>
+    <p>Swap: {{ swap_request.offer.skill_name }}</p>
+
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Submit review</button>
+    </form>
+  </main>
+</body>
+</html>

@@ -30,12 +30,6 @@ class Offer(models.Model):
 
     def __str__(self):
         return f"{self.skill_name} — {self.owner}"
-
-
-from django.conf import settings
-from django.db import models
-
-
 class SwapRequest(models.Model):
     class Status(models.TextChoices):
         PENDING = "pending", "Pending"
@@ -67,3 +61,43 @@ class SwapRequest(models.Model):
 
     def __str__(self):
         return f"Request for {self.offer} from {self.requester}"
+
+
+class Review(models.Model):
+    class Rating(models.IntegerChoices):
+        ONE = 1, "1 star"
+        TWO = 2, "2 stars"
+        THREE = 3, "3 stars"
+        FOUR = 4, "4 stars"
+        FIVE = 5, "5 stars"
+
+    swap_request = models.ForeignKey(
+        SwapRequest,
+        on_delete=models.CASCADE,
+        related_name="reviews",
+    )
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="reviews_written",
+    )
+    reviewee = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="reviews_received",
+    )
+    rating = models.PositiveSmallIntegerField(choices=Rating.choices)
+    comment = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        constraints = [
+            models.UniqueConstraint(
+                fields=["swap_request", "reviewer"],
+                name="one_review_per_request_per_reviewer",
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.rating} stars from {self.reviewer}"

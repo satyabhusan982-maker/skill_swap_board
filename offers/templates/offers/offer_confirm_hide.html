@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hide offer | SkillSwap</title>
+</head>
+
+<body>
+    <h1>Hide this offer?</h1>
+    <p>{{ offer.skill_name }} will no longer appear in browse results.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, hide offer</button>
+    </form>
+
+    <a href="{% url 'offers:detail' offer.id %}">Keep offer</a>
+</body>
+
+</html>

@@ -43,6 +43,26 @@
             <li>No active offers yet.</li>
             {% endfor %}
         </ul>
+        <h2>Reviews</h2>
+
+        {% if review_summary.review_count %}
+        <p>
+            Average rating: {{ review_summary.average_rating|floatformat:1 }} / 5
+            from {{ review_summary.review_count }} review{{ review_summary.review_count|pluralize }}
+        </p>
+        {% endif %}
+
+        {% for review in reviews %}
+        <article>
+            <h3>{{ review.rating }} / 5 stars</h3>
+            <p>From {{ review.reviewer.username }} · {{ review.swap_request.offer.skill_name }}</p>
+            {% if review.comment %}
+            <p>{{ review.comment }}</p>
+            {% endif %}
+        </article>
+        {% empty %}
+        <p>No reviews yet.</p>
+        {% endfor %}
     </main>
 </body>
 
